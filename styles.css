@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Infobox Live
+   ITS Theme deliberately un-floats infoboxes inside Live Preview's callout
+   widgets (.cm-embed-block.cm-callout). We float them again.
+
+   How: the CodeMirror widget wrapper is collapsed to zero height and the callout
+   inside it floats out of it. Because the wrapper is 0px tall, CodeMirror's
+   internal height map still matches what is on screen, so clicking on the text
+   beside the infobox puts the cursor on the right line. The lines that follow
+   simply wrap around the float, exactly like in Reading mode.
+   ========================================================================== */
+
+/* New width keyword: [!infobox|third]  (works in Reading mode and Live Preview) */
+.callout.callout.callout[data-callout~="infobox"][data-callout-metadata~="third"] {
+  width: 33.33%;
+  max-width: unset;
+}
+
+/* ---- Live Preview -------------------------------------------------------- */
+/* Desktop & tablet: every infobox floats (except full-width ones).
+   Phone: only infoboxes with the ITS "mobile" keyword float, same as ITS does. */
+:is(
+  body:not(.is-phone) .markdown-source-view.mod-cm6.is-live-preview .cm-embed-block.cm-callout:has(> .callout[data-callout~="infobox"]:not([data-callout-metadata~="wfull"], [data-callout-metadata~="sban"])),
+  body.is-phone .markdown-source-view.mod-cm6.is-live-preview .cm-embed-block.cm-callout:has(> .callout[data-callout~="infobox"][data-callout-metadata~="mobile"]:not([data-callout-metadata~="wfull"], [data-callout-metadata~="sban"]))
+) {
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  contain: none !important;
+  box-shadow: none !important;
+  background: none !important;
+
+  &:hover {
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
+  & > .callout.callout.callout[data-callout~="infobox"] {
+    float: right !important;
+    clear: none;
+    width: auto;
+    max-width: 300px;
+    margin: 0 0 var(--size-4-2, 8px) 8px !important;
+    position: relative;
+    z-index: 1;
+  }
+
+  &:hover > .callout.callout.callout[data-callout~="infobox"] {
+    box-shadow: var(--embed-block-shadow-hover);
+  }
+
+  & > .callout.callout.callout[data-callout~="infobox"]:is([data-callout-metadata~="left"], [data-callout-metadata~="p+l"]) {
+    float: left !important;
+    margin: 0 8px var(--size-4-2, 8px) 0 !important;
+  }
+
+  /* The hover "edit block" button sits at the wrapper's top-right, which is the
+     top-right corner of a right-floated box. For left boxes move it to the left. */
+  &:has(> .callout:is([data-callout-metadata~="left"], [data-callout-metadata~="p+l"])) > .edit-block-button {
+    right: auto;
+    left: var(--size-4-1, 4px);
+  }
+  & > .edit-block-button {
+    z-index: 2;
+  }
+
+  /* ITS width keywords. ITS's own Live Preview rule (width:auto) is more
+     specific than these, so they have to be restated here. */
+  & > .callout.callout.callout[data-callout~="infobox"] {
+    &[data-callout-metadata~="third"]    { width: 33.33%; max-width: unset; }
+    &[data-callout-metadata~="wmicro"]   { width: var(--callout-micro, 10%); max-width: unset; }
+    &[data-callout-metadata~="wtiny"]    { width: var(--callout-tiny, 20%); max-width: unset; }
+    &[data-callout-metadata~="wsmall"]   { width: var(--callout-small, 30%); max-width: unset; }
+    &[data-callout-metadata~="ws-med"]   { width: var(--callout-small-med, 35%); max-width: unset; }
+    &[data-callout-metadata~="wm-sm"]    { width: var(--callout-med-small, 40%); max-width: unset; }
+    &[data-callout-metadata~="wmed"]     { width: var(--callout-medium, 50%); max-width: unset; }
+    &[data-callout-metadata~="wm-tl"]    { width: var(--callout-med-tall, 65%); max-width: unset; }
+    &[data-callout-metadata~="wtl-med"]  { width: var(--callout-tall-med, 80%); max-width: unset; }
+    &[data-callout-metadata~="wtall"]    { width: var(--callout-tall, 95%); max-width: unset; }
+    &[data-callout-metadata~="wtiny-c"]  { width: 19%; max-width: unset; }
+    &[data-callout-metadata~="wsmall-c"] { width: 32.4%; max-width: unset; }
+    &[data-callout-metadata~="ws-med-c"] { width: 39%; max-width: unset; }
+    &[data-callout-metadata~="wm-sm-c"]  { width: 49%; max-width: unset; }
+    &[data-callout-metadata~="wmed-c"]   { width: 59%; max-width: unset; }
+    &[data-callout-metadata~="wm-tl-c"]  { width: 79%; max-width: unset; }
+    &[data-callout-metadata~="wfit"]     { width: fit-content; max-width: min-content; }
+  }
+}

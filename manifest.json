@@ -1,0 +1,10 @@
+{
+  "id": "infobox-live",
+  "name": "Infobox Live",
+  "version": "1.0.0",
+  "minAppVersion": "1.5.7",
+  "description": "Float infobox callouts beside your text in Live Preview, insert them from the Insert menu, and move, resize or delete them with a right-click.",
+  "author": "DVelascoHerruzo",
+  "authorUrl": "https://github.com/DVelascoHerruzo",
+  "isDesktopOnly": false
+}
